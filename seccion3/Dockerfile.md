@@ -29,7 +29,8 @@ LABEL: puede ir a cualquier nivel del Dockefile. Es metadata de la imagen.
 Si se añaden antes de la instalación, la metadata se guarda en la imagen y por tanto se fuerza la recreación de la imagen.
 
 
-USER: qué usuario ejecuta la tarea. Cuando no definimos uno, lo hace el usuario root.
+USER: qué usuario está ejecutando la tarea en este momento. 
+Cuando no definimos uno, lo hace el usuario root.
 
     RUN echo "$(whoami)" > /var/www/html/user1.html
     
@@ -49,4 +50,34 @@ Log de creación de un contenedor
     docker logs NAME
     
     
+VOLUME: Para persistir la data en el contenedor. Que aunque el contenedor muera se queda guardado
+ en la máquina
+ 
+ 
+CMD, dockerignore
+---------------------
+
+CMD: lo que mantiene vivo el contenedor. Tiene que ser un proceso en primer plano.
+También puede ser un script
+
+    COPY run.sh /run.sh
     
+    CMD sh /run.sh
+
+Con  `docker ps -a` vemos en COMMAND lo que se está ejecutando. 
+Para ver la salida de `docker ps -a` sin truncar
+ 
+    docker ps --no-trunc
+
+
+    CONTAINER ID                                                       IMAGE               COMMAND                     CREATED             STATUS              PORTS                NAMES
+    592be97c7f6d4f6e572aa338b3d5466405000eaf43c7083e5e7997fa947d4718   apache              "/bin/sh -c 'sh /run.sh'"   4 seconds ago       Up 3 seconds        0.0.0.0:80->80/tcp   gallant_edison
+
+Si hacemos un log del container (por NAME, gallant_edison) vemos el echo de sh
+
+    $ docker logs -f gallant_edison
+    iniciando contenedor...
+
+
+El dockerignore es normalmente un archivo oculto. 
+Definimos qué archivos NO QUEREMOS ENVIAR al contenedor
