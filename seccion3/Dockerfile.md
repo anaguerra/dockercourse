@@ -2,9 +2,10 @@ Introducción al Dockerfile
 ============================
 
 FROM, RUN, COPY/ADD
---------------------
+--------------------º
 
 COPY y ADD Son comandos similares salvo que ADD permite agregar URLs
+RUN: líneas de comandos que podemos ejecutar 
 
 
 ENV, WORKDIR, EXPOSE
