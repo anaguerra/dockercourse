@@ -81,3 +81,33 @@ Si hacemos un log del container (por NAME, gallant_edison) vemos el echo de sh
 
 El dockerignore es normalmente un archivo oculto. 
 Definimos qué archivos NO QUEREMOS ENVIAR al contenedor
+
+
+#LISTAR CONTENEDORES docker ps -a
+#docker rm -fv NAME --> Eliminar contenedor NAME
+#docker build -t apache .
+#docker run -d -p 80:80 apache
+
+**Dockerfile con todos los argumentos vistos**
+
+Constuir imagen, con un tag (v1)
+
+    docker build -t nginx:v1 .
+    
+Correr el contenedor
+
+    docker run -d -p 80:80 nginx:v1
+    
+Comprobamos que esté levantado
+    
+    docker ps 
+    
+    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                        NAMES
+    ebd314b557dd        nginx:v1            "/bin/sh -c 'nginx -…"   4 seconds ago       Up 2 seconds        0.0.0.0:80->80/tcp, 90/tcp   zealous_brattain
+  
+Comprobamos que en localhost tenemos el site de fruit
+
+Y comprobamos que la imagen está
+
+    docker images | grep nginx
+

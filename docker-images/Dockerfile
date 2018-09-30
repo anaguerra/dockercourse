@@ -1,30 +1,37 @@
-FROM centos
+#Creando una imagen con todos los argumentos vistos hasta ahora
 
-LABEL version=1.0
-LABEL description="This is an apache image"
+#imagen oficial. En general tienen com ventaja que son muy livianas
+#ventajas de las personalizadas, que puedes agregar más cosas
+FROM nginx
 
-RUN yum install httpd -y
+RUN useradd ana
 
-COPY startbootstrap-sb-admin-2 /var/www/html/
+# document root por default de la imagen de nginx
+# ver  https://hub.docker.com/_/nginx/
+COPY fruit /usr/share/nginx/html
 
-RUN echo "$(whoami)" > /var/www/html/user1.html
+ENV archivo docker
 
-RUN useradd ricardo
+WORKDIR /usr/share/nginx/html
 
-USER ricardo
+# enviamos el valor de la variable al archivo env.html
+RUN echo "$archivo" > /usr/share/nginx/html/env.html
+EXPOSE 90
 
-RUN echo "$(whoami)" > /tmp/user2.html
+LABEL version=1
+
+USER ana
+
+RUN echo "Yo soy $(whoami)" > /tmp/yo.html
 
 USER root
 
-RUN cp /tmp/user2.html /var/www/html/user2.html
+RUN cp /tmp/yo.html /usr/share/nginx/html/docker.html
 
-COPY run.sh /run.sh
+# persitir logs
+VOLUME /var/log/nginx
 
-CMD sh /run.sh
-
-
-#LISTAR CONTENEDORES docker ps -a
-#docker rm -fv NAME --> Eliminar contenedor NAME
-#docker build -t apache .
-#docker run -d -p 80:80 apache
+# si se deja en blanco toma el CMD de la imagen de nginx
+# se puede ver este cmd con el comando "docker histori -H nginx --no-trunc
+# --> /bin/sh -c #(nop)  CMD ["nginx" "-g" "daemon off;"
+CMD nginx -g 'daemon off;'
