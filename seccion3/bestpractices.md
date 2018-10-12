@@ -7,7 +7,7 @@ Buenas prácticas
 
 - Archivos pesados que no queremos que stén en el contexto de docker, agregarlos al .dockerignore
 
-- Pocas capas
+- Pocas capas. Imágenes pequeñas con pocas capas.
 
 - Separar líneas con "\"
 
@@ -23,7 +23,7 @@ Veamos un ejemplo por cada uno
 
 p.e.
 
-- Efímero: p.e. si necesitamos Apache y MySQL, crear una imagen por cada uno
+- Efímero: p.e. si necesitamos Apache y MySQL, crear una imagen por cada uno.
 
 
 
