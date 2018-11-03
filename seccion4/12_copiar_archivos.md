@@ -23,3 +23,13 @@ El fichero está en la ruta "/var/log/dpkg.log" dentro del contenedor
     docker cp apache:/var/log/dpkg.log .
     
 Esto traerá el fichero a la ruta actual.  
+
+
+RESUMEN:
+Extraer el archivo 
+
+    docker cp container:/path/del/archivo /path/de/tu/maquina. 
+
+Para enviar un archivo, al contrario: 
+
+    docker cp /path/de/tu/maquina container:/path/container
