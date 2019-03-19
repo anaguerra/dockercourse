@@ -54,10 +54,6 @@ Y vemos nuestra base de datos "mydb"
 
 
 
- 
-
- 
-
 **JENKINS**
 
     
@@ -91,9 +87,30 @@ primera vez, nos pedirá contraseña etc...
 
 **NGINX**
 
+    docker run -d --name nginx nginx
 
-    
+Ingresamos a él con `docker exec -ti nginx bash` y vamos a la carpeta de logs
 
+    cd /var/log/nginx
     
+Eliminamos el contenedor que acabamos de crear: 
+
+    docker rm -fv $(docker ps -aq)
+
+Ahora lo volvemos a crear con un volumen en una carpeta del pc, mapenado:
+
+    docker run -d --name nginx -p 80:80 -v /opt/nginx:/var/log/nginx nginx
     
-    
+Con esto le decimos que todo lo que está en /var/log/nginx se va a mapear a la carpeta
+/opt/nginx, de forma que si el contenedor muere tenemos los logs.
+
+Vamos al navegador y comprobamos que Nginx funciona. 
+Y podemos ver los logs en /opt/nginx.
+
+Hacemos `tailf /opt/nginx/error.log` y visualizamos en tiempo real los logs. 
+Generamos un 404 y podemos verlo.
+
+Eliminamos el contenedor y lo volvemos a crear. Si volvemos al error.log seguimos 
+teniendo el error generado antes.
+
+
