@@ -1,6 +1,6 @@
 **compartir volúmenes**
 
-Creamos un directorio "test" y dentro de el:
+Creamos un directorio "volumen" y dentro de el:
 
 Creamos un fichero Dockerfile con:
 
@@ -18,13 +18,16 @@ El fichero start.sh será este:
     #!/bin/bash
     
     while true; do
-        echo $(date +%H:%M:%S) >> /opt/index.html && \
+        echo $(date +%H:%M:%S) >> /opt/volumen/common/index.html && \
         sleep 10
     done
         
-Para construir el contenedor
+Para construir la imagen:
 
     docker build -t generador .
 
- 
+
+Vamos a correr la imagen con ($PWD es la ruta actual):
+    
+    docker run -v $PWD/common:/opt -d --name gen generador  
     
