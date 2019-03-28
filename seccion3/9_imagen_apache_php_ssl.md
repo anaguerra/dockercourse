@@ -8,8 +8,11 @@ Apache - PHP - SSL
     RUN \
         yum -y install httpd php php-cli php-common
         
+    RUN echo "<?php phpinfo(); ?>" > /var/www/html/hola.php
+        
     CMD apachectl -DFOREGROUND
     
+El RUN echo es para que nos genere un archivo php para probar que se instaló bien.
 
 Construimos la imagen con 
 
