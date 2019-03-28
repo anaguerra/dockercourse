@@ -23,7 +23,7 @@ Corremos el contenedor con
 Si vamos al navegador , en localhost veremos nuestro Apache funcionando.
 Para ingresar al contenedor hacemos
 
-    docker exec miapache bash
+    docker exec -ti miapache bash
     
     [root@a5d41fdf9b6b /]# 
 
