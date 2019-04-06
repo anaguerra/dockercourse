@@ -1,0 +1,86 @@
+Redes
+---------------
+
+Para crear una red normal escribimos
+
+    docker network create mi_red
+    
+En Compose para crear una red hacemos (a la altura de `services`)
+
+    networks:
+        mi-red:
+
+        
+Cómo incluimos al contenedor en esta red? En la documentación oficial tenemos:
+
+    services:
+      some-service:
+        networks:
+         - some-network
+         - other-network
+    
+Entonces nuestro docker-compose.yml quedaría así:
+
+    version: '3'
+    services:
+        web:
+            container_name: mi-nginx
+            ports:
+                - "8080:80"
+            image: nginx
+            networks:
+                - mi-red
+    networks:
+        mi-red:
+    
+Creamos con `docker-compose up -d`
+
+Y miramos en qué contenedor está la red con `docker inspect mi-nginx`
+
+    ....
+    "Networks": {
+        "dockercompose_mi-red": {
+            "IPAMConfig": null,
+            "Links": null,
+            "Aliases": [
+                "web",
+                "75846426e989"
+
+El nombre que le pone es "dockercompose_mi-red" porque nuestra carpeta actual es "dockercompose"
+
+Vamos a crear otro servicio en la misma red. Esta vez con contenedores Apache (que traen 
+"ping", cosa que nginx no trae, para poder testear después). 
+Nuestro docker-compose.yml sería entonces:
+
+    version: '3'
+    services:
+      web:
+        container_name: mi-nginx
+        ports:
+          - "8080:80"
+        image: httpd
+        networks:
+          - mi-red
+      web2:
+        container_name: mi-nginx2
+        ports:
+          - "8081:80"
+        image: httpd
+        networks:
+          - mi-red
+    networks:
+      mi-red:
+    
+Creamos contenedores y comprobamos que están corriendo:
+
+    CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS                  NAMES
+    483101d68aef        httpd               "httpd-foreground"   52 seconds ago      Up 50 seconds       0.0.0.0:8080->80/tcp   mi-nginx
+    b4e77e7aff38        httpd               "httpd-foreground"   52 seconds ago      Up 51 seconds       0.0.0.0:8081->80/tcp   mi-nginx2
+
+Si hacemos ping de un contenedor a otro:
+
+    docker exec -ti mi-nginx bash -c "ping mi-ningx2"
+    
+ OJO: da "ping:comman not found". Esperando respuesta del profe
+
+    
