@@ -77,10 +77,11 @@ Creamos contenedores y comprobamos que están corriendo:
     483101d68aef        httpd               "httpd-foreground"   52 seconds ago      Up 50 seconds       0.0.0.0:8080->80/tcp   mi-nginx
     b4e77e7aff38        httpd               "httpd-foreground"   52 seconds ago      Up 51 seconds       0.0.0.0:8081->80/tcp   mi-nginx2
 
-Si hacemos ping de un contenedor a otro:
+Podemos hacer ping de un contenedor a otro (ojo, previo hay que instalar ping en los contenedores nginx porque ya no
+viene por defecto por lo visto. Con `apt-get` y `apt-get install iputils-ping`):
 
-    docker exec -ti mi-nginx bash -c "ping mi-ningx2"
+    docker exec -ti mi-nginx bash -c "ping mi-nginx2"
     
- OJO: da "ping:comman not found". Esperando respuesta del profe
-
-    
+    PING mi-nginx2 (172.18.0.3) 56(84) bytes of data.
+    64 bytes from mi-nginx2.dockercompose_mi-red (172.18.0.3): icmp_seq=1 ttl=64 time=0.056 ms
+    64 bytes from mi-nginx2.dockercompose_mi-red (172.18.0.3): icmp_seq=1 ttl=64 time=0.056 ms
