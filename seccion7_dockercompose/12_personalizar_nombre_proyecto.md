@@ -17,10 +17,12 @@ Cuando hacemos `docker-compose up -d`....
     Creating network "docker_default" with the default driver
     Creating docker_web_1 ... done
  
-Docker va a crear un servicio con nombre "docker_default".
+Docker va a crear un servicio con nombre "docker_default". Y una red por defecto ("_default").
  
 El prefijo "docker" hace referencia a la carpeta actual. Si queremos cambiar el prefijo podemos hacer
 
-    docker-compose -p 
+    docker-compose -p webtest up -d
  
+    Creating network "webtest_mi-red" with the default driver
+
  
