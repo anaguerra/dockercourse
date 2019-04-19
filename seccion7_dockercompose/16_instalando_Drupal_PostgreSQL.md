@@ -31,8 +31,12 @@ Aquí usamos volúmenes nombrados.
     volumes:
       - drupal:/var/www/html
 
+Luego se define en la etiqueta "volumes"
+
     volumes:
       drupal:
+      
+Los dos servicios van en la misma red "net", para que puedan verse.
       
 Como imagen de Drupal se ha cogido la que tiene el tag 8-apache. Ver en la documentación
 todas las imágenes y tags que existen.
