@@ -95,4 +95,22 @@ El Dockerfile
     CMD /start.sh
     
     
+La variable de entorno ZABBIX_REPO es la URL del repositorio de Zabbix. Tenemos que instalarlo para poder acceder a los paquetes.
+
+En RUN instalamos el repo y los diferentes paquetes.
+Exponemos los puertos por defecto
+
+Copiamos el start.sh
+
+    #!/bin/bash
     
+    # Start zabbix server
+    /usr/sbin/zabbix_server -c /etc/zabbix/zabbix_server.conf
+    
+    # Start zabbix agent
+    /usr/sbin/zabbix_agentd
+    
+    # Start httpd
+    apachectl -DFOREGROUND
+    
+que lo que hace es iniciar el zabbix server y luego el agente. Y finalmente inicia Apache.
