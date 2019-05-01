@@ -98,9 +98,10 @@ El Dockerfile
 La variable de entorno ZABBIX_REPO es la URL del repositorio de Zabbix. Tenemos que instalarlo para poder acceder a los paquetes.
 
 En RUN instalamos el repo y los diferentes paquetes.
-Exponemos los puertos por defecto
 
-Copiamos el start.sh
+Se exponen los puertos por defecto.
+
+En la siguiente línea se copia el start.sh
 
     #!/bin/bash
     
@@ -114,3 +115,52 @@ Copiamos el start.sh
     apachectl -DFOREGROUND
     
 que lo que hace es iniciar el zabbix server y luego el agente. Y finalmente inicia Apache.
+
+Luego tenemos otra línea con la configuración de Apache para Zabbix.
+
+La siguiente línea es la configuración del Zabbix Server. Se puede encontrar en github. 
+    
+    COPY ./conf/zabbix-server.conf  /etc/zabbix/zabbix_server.conf
+
+Si examinamos el fichero .conf podemos ver que en la conexión a la base de datos se especifica el servicio como el DBHOST, 
+así como la bd y las credenciales.
+
+    DBHOST=db
+    DBUSER=zabbix
+    ...
+    
+La siguiente línea es la configuración del agente. Si abrimos el fichero .conf, vemos variables de configuración
+en PHP.
+
+En la siguiente línea se define un volumen, donde estarán los archivos de log.
+
+Y por último se dan permisos de ejecución al script y se lanza.
+
+
+Levantamos los servicios con `docker-compose up -d`
+
+Una vez acabada la instalación comprobamos que están los servicios:
+
+    CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                         NAMES
+    9f9ef4ec73b5        zabbix              "/bin/sh -c /start.sh"   8 minutes ago       Up 8 minutes        0.0.0.0:80->80/tcp, 443/tcp   zabbix-web
+    daa188b14db1        mysql:5.7           "docker-entrypoint.s…"   8 minutes ago       Up 8 minutes        0.0.0.0:3306->3306/tcp        zabbix-db
+
+Antes de nada vamos a ver los logs de la base de datos. Recordemos que se hacía un import de un fichero SQL.
+Entonces miramos el log del servicio de base de datos. Con `docker logs -f zabbix-db`. Y así comprobamos si
+acabó la importación.
+
+    2019-05-01T17:35:21.579409Z 0 [Note] mysqld: ready for connections.
+    Version: '5.7.21'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+
+Listo pues.
+
+Ahora vamos al navegador y escribimos "localhost/zabbix" y vemos nuestro Zabbix funcionando.
+username: admin
+password: zabbix
+
+
+
+ 
+
+
+
